@@ -1,13 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>HYP1_T1 &ndash; JavaScript Date Object</title>
+    <title>JavaScript Clock and Time on Page</title>
     <meta charset="utf-8">
-    <!-- TODO: Create your JavaScript file and include it here -->
+    <script src="judysscript.js"></script>
 </head>
-<body>
-<!-- TODO: Call functions for current day and current time (from the JS file) here -->
+<body onload="currentDay(); currentTime();">
 
-<!-- TODO: Add links for time on page and refresh and call them using the javascript pseudo protocol -->
+	<h1>JavaScript Clock and Time on Page</h1>
+	<p id="date"></p>
+	<p id="time"></p>
+	<a href="javascript:void(0)" onclick="timeOnPage()">Your time on this page</a>
+	<a href="javascript:void(0)" onclick="refresh()">Refresh</a>
+
+	<script type="text/javascript">
+        // Funktion, die das aktuelle Datum und den Wochentag setzt und auf der Seite anzeigt
+		function currentDay() {
+			var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			var date = new Date();
+			var dayOfWeek = weekdays[date.getDay()];
+			var dayOfMonth = date.getDate();
+			var month = months[date.getMonth()];
+			var year = date.getFullYear();
+			document.getElementById("date").innerText = dayOfWeek + ", " + month + " " + addLeadingZero(dayOfMonth) + ", " + year;
+		}
+
+		function currentTime() {
+            // Funktion, die die aktuelle Uhrzeit setzt und auf der Seite anzeigt
+			var date = new Date();
+			var hours = date.getHours();
+			var minutes = date.getMinutes();
+			var seconds = date.getSeconds();
+			document.getElementById("time").innerText = addLeadingZero(hours) + ":" + addLeadingZero(minutes) + ":" + addLeadingZero(seconds);
+			setTimeout(currentTime, 1000); // die Funktion wird alle 1000 Millisekunden aufgerufen, um die Uhrzeit zu aktualisieren
+		}
+
+        // Funktion, die eine führende Null hinzufügt, wenn die Zahl kleiner als 10 ist
+		function addLeadingZero(value) {
+			return (value < 10) ? "0" + value : value;
+		}
+
+        // Funktion, die die Zeit berechnet, die der Nutzer auf der Seite verbracht hat und eine Alert-Box mit dieser Zeit anzeigt
+		function timeOnPage() {
+			var timeOnPage = new Date(new Date() - new Date(window.performance.timing.navigationStart));
+			var hours = timeOnPage.getUTCHours();
+			var minutes = timeOnPage.getUTCMinutes();
+			var seconds = timeOnPage.getUTCSeconds();
+			var timeString = addLeadingZero(hours) + ":" + addLeadingZero(minutes) + ":" + addLeadingZero(seconds);
+			alert("You've been on this page for: " + timeString);
+		}
+
+        // Funktion, die die Seite aktualisiert
+		function refresh() {
+			location.reload();
+		}
+	</script>
 </body>
 </html>
